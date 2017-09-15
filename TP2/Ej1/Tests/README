@@ -1,0 +1,2 @@
+Para compilar: make o make tests
+Para ejecutar: ./tests

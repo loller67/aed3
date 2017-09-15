@@ -1,0 +1,37 @@
+#ifndef _ADYACENCY_LIST_H_
+#define _ADYACENCY_LIST_H_
+
+
+class AdyacencyList {
+public:
+	AdyacencyList();
+	AdyacencyList(int m, int n);
+	~AdyacencyList();
+
+	void addEdge(int n1, int n2);
+	void addEdge(int n1, int n2, int w);
+
+
+	void print();
+
+private:
+
+	struct Edge {
+		int node1;
+		int node2;
+		int weigth;
+
+		Edge(): node1(0), node2(0), weigth(0){};
+		Edge(int n1, int n2):node1(n1), node2(n2), weigth(0){};
+		Edge(int n1, int n2, int p):node1(n1), node2(n2), weigth(p){};
+	};
+
+	Edge* edges;
+
+	int settedEdges;
+	int nodesQ;
+	int edgesQ;
+
+};
+
+#endif

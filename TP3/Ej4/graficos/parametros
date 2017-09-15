@@ -1,0 +1,30 @@
+set term png; set key left box; set ylabel "La opcion es estrictamente mejor que las otras (%)"; set xlabel "Nodos"
+
+set boxwidth 0.5; set style fill solid
+
+set title "Propuesta 1 vs 2"; set output "Tabu1vs2A.png"; plot[14:42][0:120] "mejorQuitarSolvsNodoAleatorio.txt" u ($1+0.5):(100 *$2 /($2+$4)) t "Toda la clique" w boxes ls 1, "mejorQuitarSolvsNodoAleatorio.txt" u 1:(100*$4 /($2+$4)) t "Primer nodo" w boxes ls 2
+
+set boxwidth 2; set output "Tabu1vs2M.png"; plot[62:175][0:120] "mejorQuitarSolvsNodoMalo.txt" u ($1+1):(100*$2 /($2+$4)) t "Toda la clique" w boxes ls 1, "mejorQuitarSolvsNodoMalo.txt" u 1:(100*$4 /($2+$4)) t "Primer nodo" w boxes ls 2
+
+set boxwidth 0.5; set title "Quitando distintos nodos"; set output "TabuDistintosNodosA.png"; plot[14:42][0:120] "mejorNodoQuitarAleatorio.txt" u 1:(100*$2 /($2+$3+$4+$5)) t "Primer nodo" w boxes ls 1, "mejorNodoQuitarAleatorio.txt" u ($1+1.5):(100*$3 /($2+$3+$4+$5)) t "Nodo de menor grado" w boxes ls 2, "mejorNodoQuitarAleatorio.txt" u ($1+1):(100*$4 /($2+$3+$4+$5)) t "Nodo de mayor grado" w boxes ls 3, "mejorNodoQuitarAleatorio.txt" u ($1+0.5):(100*$5 /($2+$3+$4+$5)) t "Nodo random" w boxes ls 4
+
+set boxwidth 2; set output "TabuDistintosNodosM.png"; plot[62:175][0:130] "mejorNodoQuitarMalo.txt" u 1:(100*$2 /($2+$3+$4+$5)) t "Primer nodo" w boxes ls 1, "mejorNodoQuitarMalo.txt" u ($1+1.5):(100*$3 /($2+$3+$4+$5)) t "Nodo de menor grado" w boxes ls 2, "mejorNodoQuitarMalo.txt" u ($1+1):(100*$4 /($2+$3+$4+$5)) t "Nodo de mayor grado" w boxes ls 3, "mejorNodoQuitarMalo.txt" u ($1+0.5):(100*$5 /($2+$3+$4+$5)) t "Nodo random" w boxes ls 4
+
+set ylabel "Tamaño de la lista tabu"; set title "Buscando el mejor k"; set output "TabuAnalisisKA.png"; plot[15:40][0:13] "mejorKAleatorio.txt" u 1:2 t "Mas apariciones" w lp pt 4, "mejorKAleatorio.txt" u 1:3 t "Menor" w lp pt 5, "mejorKAleatorio.txt" u 1:4 t "Mayor" w lp pt 6
+
+set output "TabuAnalisisKM.png"; plot[35:168][0:2] "mejorKMalo.txt" u 1:2 t "Mas apariciones" w lp pt 4, "mejorKMalo.txt" u 1:3 t "Menor" w lp pt 5, "mejorKMalo.txt" u 1:4 t "Mayor" w lp pt 6
+
+#set boxwidth 0.5; set ylabel "Grafos que devuelven mejor solucion encontrada"; set title "Desempatando los k"; set output "TabuDesempateKA.png"; plot[14:42][0:102] "mejorKplusAleatorio.txt" u 1:($2 /100) t "k = 2" w boxes ls 1, "mejorKplusAleatorio.txt" u ($1 + 0.5):($3 /100) t "k = 3" w boxes ls 2, "mejorKplusAleatorio.txt" u ($1+1):($4 /100) t "k = n/3" w boxes ls 3
+
+set ylabel "Grafos que devuelven mejor solucion encontrada"; set title "Desempatando los k"; set output "TabuDesempateKA.png"; plot[14:42][9879:10050] "mejorKplusAleatorio.txt" u 1:2 t "k = 2" w lp pt 4, "mejorKplusAleatorio.txt" u 1:3 t "k = 3" w lp pt 5, "mejorKplusAleatorio.txt" u 1:4 t "k = n/3" w lp pt 6
+
+set ylabel "Cantidad de iteraciones"; set title "Maximas iteraciones hasta encontrar mejora"; set output "TabuMaxRep.png"; plot[15:40] "mejorKAleatorio.txt" u 1:5 t "test 1" w lp pt 4, "mejorKplusAleatorio.txt" u 1:5 t "test 2" w lp pt 5, x * 3 / 4 t "n*3/4" w line 
+
+set ylabel "Diferencia de aristas en la frontera"; set title "Grafos k-regulares"; set output "kregularCalidad.png"
+plot[9:22][0:6] \
+"kregular.txt" u 1:5 t "max (Local - Goloso)" w lp pt 7, "kregular.txt" u 1:6 t "max (Tabu - Local)" w lp pt 8, "kregular.txt" u 1:7 t "max (Exacto - Tabu)" w lp pt 9, \
+"kregular.txt" u 1:2 t "prom (Local - Goloso)" w lp pt 4, "kregular.txt" u 1:3 t "prom (Tabu - Local)" w lp pt 5, "kregular.txt" u 1:4 t "prom (Exacto - Tabu)" w lp pt 6
+
+set ylabel "Tiempo (ms)"; set title "Grafos k-regulares"; set output "kregularTiempo.png"
+plot[9:22] \
+"kregular.txt" u 1:8 t "prom Goloso + Local" w lp pt 4, "kregular.txt" u 1:9 t "prom Tabu" w lp pt 5, "kregular.txt" u 1:10 t "prom Exacto" w lp pt 5

@@ -1,0 +1,9 @@
+
+
+1)arbol completo, usar kurskal para un arbol generador minimo y usar ese para test
+
+
+2) generador de ciclos simples  => tomar el kruskal y agregarle un arista cualquiera que no pertenezca 
+
+3) ciclos completos -> idem pero agregando n aristas, esto implica que hayan  posibilidades de que la clique se agrande 
+

@@ -1,0 +1,13 @@
+set term png; set key left box; set ylabel "Tiempo (ms)"; set title "Grafo completo"; set xlabel "NM"
+
+#set output "timeGC.png"; plot "tGC" t "Mediciones" w lp pt 4
+
+#set title "Grafo minimo"; set output "timeGM.png"; plot "tGM" t "Mediciones" w lp pt 4
+
+#set title "Grafos minimo y completo"; set output "ambos grafos NM.png"; plot "tGM" t "Minimo (M = N)" w lp pt 4, "tGC" t "Completo" w lp pt 5, x/15 + 500 t "O(NM)"
+
+set title "Grafos minimo, completo y  aleatorio"; set xlabel "N"; set output "all 3 grafos N.png"; plot "times" u 1:3 t "Minimo (M = N)" w lp pt 4, "times" u 1:2 t "Completo" w lp pt 5, "times" u 1:4 t "Aleatorio" w lp pt 6
+
+set title "Grafo minimo"; set xlabel "N"; set output "grafo minimo.png"; plot "times" u 1:3 t "Minimo (M = N)" w lp pt 4
+
+set title "Variacion de C"; set xlabel "cmax - cmin"; set output "timeC.png"; plot "tC" u 1:($2/1000) t "Mediciones" w lp pt 4, log(x)/log(2) t "log_2(x)"

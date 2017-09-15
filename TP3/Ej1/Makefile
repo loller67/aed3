@@ -1,0 +1,40 @@
+#mi compliacion con crono funciona con este comando g++ -std=c++11 ../aux/parser.o ../aux/AdyMatrix/AdyMatrix.o  tests.cpp -o Ej1
+#No se porque, hay que revisar
+
+
+# I am a comment, and I want to say that the variable CC will be
+# the compiler to use.
+CC=g++
+# Hey!, I am comment number 2. I want to say that CFLAGS will be the
+# options I'll pass to the compiler.
+OFLAGS= -c -g -ggdb -Wall -std=c++11
+CFLAGS = -g -ggdb -Wall -std=c++11
+
+SOURCES = Exacto.o ../aux/AdyMatrix/AdyMatrix.o ../aux/Solucion/Solucion.o ../aux/Generadores/generador.o
+
+tests: $(SOURCES) tests.o
+	$(CC) $(CFLAGS) $(SOURCES) tests.o -o tests
+
+tests.o: tests.cpp
+	$(CC) $(OFLAGS) tests.cpp
+
+
+../aux/AdyMatrix/AdyMatrix.o: ../aux/AdyMatrix/AdyMatrix.h ../aux/AdyMatrix/AdyMatrix.cpp
+	$(CC) $(OFLAGS) ../aux/AdyMatrix/AdyMatrix.cpp -o ../aux/AdyMatrix/AdyMatrix.o
+
+../aux/Solucion/Solucion.o: ../aux/Solucion/Solucion.h ../aux/Solucion/Solucion.cpp
+	$(CC) $(OFLAGS) ../aux/Solucion/Solucion.cpp -o ../aux/Solucion/Solucion.o
+
+../aux/Generadores/generador.o: ../aux/Generadores/generador.h ../aux/Generadores/generador.cpp
+	$(CC) $(OFLAGS)  ../aux/Generadores/generador.cpp -o ../aux/Generadores/generador.o
+
+
+Exacto.o: Exacto.h Exacto.cpp
+	$(CC) $(OFLAGS) Exacto.cpp -o Exacto.o
+
+clean:
+	rm ../aux/AdyMatrix/AdyMatrix.o
+	rm ../aux/Solucion/Solucion.o
+	rm Exacto.o
+	rm tests
+	rm tests.o
