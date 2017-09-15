@@ -1,0 +1,144 @@
+#ifndef _AUX_H_
+#define _AUX_H_
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <math.h>
+#include <assert.h>
+#include <vector>
+#include <stdarg.h>
+#include <utility>
+#include <stdlib.h> 
+//* ROJO ES CRECIENTE Y AZUL ES DECRECIENTE*/
+
+using namespace std;
+/*
+struct tupla{
+    int valor, pintado; //pintado es 1 o 0
+
+    tupla(int n, bool e){
+		valor=n;
+		pintado=e;
+		
+		}
+    tupla(){
+		 valor =0;
+		 pintado=false;
+		 }
+    
+    tupla operator=(const tupla& v){
+        valor = v.valor;
+        pintado = v.pintado;
+    }
+};
+*/
+
+
+void imprimir_vector(vector<int> &vec, int n){
+
+	for(int i=0;i<n;i++)
+		cout<<vec[i]<< " ";
+
+	cout<< " "<<endl;
+}
+
+
+
+int resolver(vector<int>& entrada,vector<int>& azul,int ultimo_azul, vector<int>& rojo,int ultimo_rojo,int actual,int pintados){
+	int aux=0;
+	int pintados_aux=0;
+
+		
+
+
+
+	// tengo tres opciones, ponerlo en azul, ponerlo en rojo o no hacer nada
+	if(pintados+entrada.size()-actual<=pintados_aux && pintados_aux!=-1 && actual>1 ){// si esto vale debo podar
+			return pintados_aux;
+
+	}else{//si pintados en mejor solucion > pintados hasta elemento actual, llamo a la recursion
+
+
+		if (abs(actual) >= abs(entrada.size()-1)){//sisi estoy en el final me fijo si puedo sumar 1 no importa en cual y si no, devuelvo pintados como esta
+			if(ultimo_rojo == -1 || entrada[actual]>rojo[ultimo_rojo]){
+			
+				return pintados+1;
+
+			}
+			if(ultimo_azul == -1 || entrada[actual]<azul[ultimo_azul]){
+
+				return pintados+1;
+			
+			}
+
+			return pintados;
+		}
+
+		// tengo tres opciones, ponerlo en azul, ponerlo en rojo o no hacer nada
+
+			if(ultimo_rojo==-1 || entrada[actual] > rojo[ultimo_rojo]){//rojo es creciente asi que si se cumple este if, el elemento puedo mandarlo a azul o no hacer nada
+
+				//pinto de rojo
+				aux=rojo[ultimo_rojo+1];
+				rojo[ultimo_rojo+1]=entrada[actual];
+				pintados_aux = max(pintados_aux,resolver(entrada,azul,ultimo_azul,rojo,ultimo_rojo+1,actual+1,pintados+1));		
+				rojo[ultimo_rojo+1]=aux;
+
+			}		
+
+
+			if(ultimo_azul==-1 || entrada[actual] < azul[ultimo_azul] ){//azul es decreciente asi que si se cumple este if, el elemento puedo mandarlo a azul o no hacer nada
+
+				//pinto de azul
+				aux=azul[ultimo_azul+1];
+				azul[ultimo_azul+1]=entrada[actual];
+				pintados_aux = max(pintados_aux,resolver(entrada,azul,ultimo_azul+1,rojo,ultimo_rojo,actual+1,pintados+1));	
+				azul[ultimo_azul+1]=aux;
+			}		
+			
+
+				
+			//si no hago nada (esta en las dos ramas del if)
+			pintados_aux= max(pintados_aux,resolver(entrada,azul,ultimo_azul,rojo,ultimo_rojo,actual+1,pintados));
+		}
+		return pintados_aux;
+
+}
+
+
+
+
+int primer_caso(vector<int>& entrada,vector<int>& azul,int ultimo_azul, vector<int>& rojo,int ultimo_rojo,int actual,int pintados){
+
+	if(entrada.size()<=2){
+
+		return 0;
+
+	}
+
+	int aux;
+
+
+	//pinto de rojo	
+	aux=rojo[0];
+	rojo[0]=entrada[0];
+	pintados=max(pintados,resolver(entrada,azul,-1,rojo,0,1,1));
+
+	//pinto de color azul
+	rojo[0]=aux;//despinto
+	aux=azul[0];
+	azul[0]=entrada[0];
+	pintados=max(pintados,resolver(entrada,azul,0,rojo,-1,1,1));	
+		
+	//no hago nada
+	azul[0]=aux;//despinto
+	pintados=max(pintados,resolver(entrada,azul,-1,rojo,-1,1,0));		
+	
+
+
+	return entrada.size()-pintados;	
+}
+
+
+#endif
